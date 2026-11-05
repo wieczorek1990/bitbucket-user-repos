@@ -1,21 +1,21 @@
-#!/bin/sh
+#!/bin/bash
 # Downloader.
 
 set -euo pipefail
 
-user_repos=$(./bin/repositories.py)
-mkdir -p ./repositories/
-cd ./repositories/
-for user_repo in $user_repos
-do
-  if [[ -d $user_repo ]]
-  then
-    cd $user_repo
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+REPOS_DIR="$PROJECT_DIR/repositories"
 
-    git pull
+mkdir -p "$REPOS_DIR"
+cd "$REPOS_DIR"
 
+"$SCRIPT_DIR/repositories.py" | while IFS= read -r user_repo; do
+  repo_name=$(basename "$user_repo" .git)
+  if [ -d "$repo_name" ]; then
+    cd "$repo_name" && git pull || echo "WARNING: pull failed for $repo_name"
     cd - > /dev/null
   else
-    git clone $user_repo
+    git clone "$user_repo" || echo "WARNING: clone failed for $repo_name"
   fi
 done
