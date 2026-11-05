@@ -4,7 +4,7 @@
 set -euo pipefail
 
 user_repos=$(./bin/repositories.py)
-for user_repo in $user_repos
+printfor user_repo in $user_repos
 do
   if [[ -d $user_repo ]]
   then
@@ -14,6 +14,6 @@ do
 
     cd - > /dev/null
   else
-    gh repo clone $user_repo
+    git clone $user_repo
   fi
 done
