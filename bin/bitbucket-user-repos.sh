@@ -4,7 +4,8 @@
 set -euo pipefail
 
 user_repos=$(./bin/repositories.py)
-printfor user_repo in $user_repos
+cd repositories/
+for user_repo in $user_repos
 do
   if [[ -d $user_repo ]]
   then
