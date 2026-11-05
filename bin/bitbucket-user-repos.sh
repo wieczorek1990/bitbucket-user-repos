@@ -3,7 +3,7 @@
 
 set -euo pipefail
 
-user_repos=$(echo station)
+user_repos=$(./bin/repositories.py)
 for user_repo in $user_repos
 do
   if [[ -d $user_repo ]]
